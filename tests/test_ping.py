@@ -2,7 +2,7 @@
 
 import unittest
 import configparser
-from scripts.xbox import Xbox
+from xbox import Xbox
 
 class TestPing(unittest.TestCase):
     def setUp(self):

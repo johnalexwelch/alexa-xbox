@@ -6,7 +6,7 @@ import configparser
 
 from flask import Flask, render_template
 from flask_ask import Ask, statement, question, session
-from scripts.xbox import Xbox
+from xbox import Xbox
 
 app = Flask(__name__)
 ask = Ask(app, '/')
