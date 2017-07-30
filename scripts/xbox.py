@@ -1,4 +1,3 @@
-
 #!/usr/bin/env python
 import socket, time, select
 
@@ -24,17 +23,13 @@ class Xbox(object):
         self.xbox_ping = "dd00000a000000000000000400000002"
         self.s = ''
 
-        self.encode_live_id()
-        self.build_power_packet()
-        self.connect()
-
     def connect(self):
         """
         Uses the socket library to create a connection to
         the Xbox One
         """
-        print(self.ip_addr)
-        print(self.live_id)
+        self.encode_live_id()
+        self.build_power_packet()
         self.s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.s.setblocking(0)
         self.s.bind(("", 0))

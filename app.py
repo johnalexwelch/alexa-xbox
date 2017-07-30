@@ -6,7 +6,7 @@ import configparser
 
 from flask import Flask, render_template
 from flask_ask import Ask, statement, question, session
-from xbox import Xbox
+from scripts.xbox import Xbox
 
 app = Flask(__name__)
 ask = Ask(app, '/')
@@ -22,6 +22,7 @@ def main():
     live_id = config.get('XBOX','liveID')
 
     x = Xbox(live_id, ip_addr)
+    x.connect()
     x.send_power()
 
     print("Xbox should turn on now, pinging to make sure...")
