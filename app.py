@@ -15,14 +15,23 @@ app = Flask(__name__)
 ask = Ask(app, '/')
 logging.getLogger("flask_ask").setLevel(logging.DEBUG)
 
+def getArgs():
+    config_file = 'config.ini'
+    config = configparser.ConfigParser()
+    config.read(config_file)
+
+    ip_addr = config.get('XBOX','ipAddress').replace("'","")
+    live_id = config.get('XBOX','liveID').replace("'","")
+
+    return ip_addr, live_id
+
 @ask.launch
 def main():
     config_file = 'config.ini'
     config = configparser.ConfigParser()
     config.read(config_file)
 
-    ip_addr = '192.168.86.65'
-    live_id = "FD00B5DEA46B35EE"
+    ip_addr, live_id = getArgs()
 
     x = Xbox(live_id, ip_addr)
     x.connect()
@@ -43,13 +52,9 @@ def main():
 
 @app.route('/docker')
 def docker():
-    ''' Used for testing purposes '''
-    config_file = 'config.ini'
-    config = configparser.ConfigParser()
-    config.read(config_file)
+    ''' Used for testing that the container is accessible as expected '''
+    ip_addr, live_id = getArgs()
 
-    ip_addr = '192.168.86.65'
-    live_id = "FD00B5DEA46B35EE"
     x = Xbox(live_id, ip_addr)
     x.connect()
     x.send_power()
@@ -66,19 +71,21 @@ def docker():
 
     x.close_socket()
 
-    return "Hello World"
+    return 'works'
 
 @app.route('/ping')
 def ping():
-    ''' Send a ping to make sure the networks are talking ''' 
+    ''' Used for testing to make sure the container is on the host network ''' 
     def send_ping(s):
         s.send(bytearray.fromhex("dd00000a000000000000000400000002"))
         return select.select([s], [], [], 5)[0]
 
+    ip_addr, live_id = getArgs()
+
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.setblocking(0)
     s.bind(("", 0))
-    s.connect(('192.168.86.65', 5050))
+    s.connect((ip_addr, 5050))
 
     ping_result = send_ping(s)
 

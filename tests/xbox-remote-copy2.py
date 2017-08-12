@@ -7,20 +7,20 @@ XBOX_POWER = "dd02001300000010"
 
 py3 = sys.version_info[0] > 2
 
+def getArgs():
+    config_file = 'config.ini'
+    config = configparser.ConfigParser()
+    config.read(config_file)
+
+    ip_addr = config.get('XBOX','ipAddress').replace("'","")
+    live_id = config.get('XBOX','liveID').replace("'","")
+
+    return ip_addr, live_id
 
 
 def main():
-    ip_addr = '192.168.86.65'
-    live_id = "FD0085DEA46835EE"
 
-
-    parser = ArgumentParser(description="Send power on packets to a Xbox One.")
-    parser.add_argument('-a', '--address', dest='ip_addr', help="IP Address of Xbox One", default='')
-    parser.add_argument('-i', '--id', dest='live_id', help="Live ID of Xbox One", default='')
-    parser.add_argument('-f', dest='forever', help="Send packets until Xbox is on", action='store_true')
-    args = parser.parse_args()
-
-
+    ip_addr, live_id = getArgs()
 
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.setblocking(0)
