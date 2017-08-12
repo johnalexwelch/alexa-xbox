@@ -1,4 +1,5 @@
 venv
+docker
 __pycache__
 
 *.ini
