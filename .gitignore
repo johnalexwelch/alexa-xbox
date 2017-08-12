@@ -1,6 +1,3 @@
 venv
-tests
-docker
 __pycache__
-
 *.ini
