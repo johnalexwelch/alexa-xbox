@@ -1,4 +1,6 @@
-From python:3.6
+FROM resin/raspberry-pi-python:latest
+# Enable systemd
+ENV INITSYSTEM on
 ADD . /xbox
 WORKDIR /xbox
 RUN pip install -r requirements.txt
